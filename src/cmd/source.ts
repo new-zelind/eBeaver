@@ -4,7 +4,7 @@ import { Message } from "discord.js";
 export default Command({
     names: ["source"],
     documentation: {
-        description: "See ByrnesBot's source code on GitHub.",
+        description: "See my source code on GitHub.",
         group: "META",
         usage: "source"
     },
@@ -14,7 +14,7 @@ export default Command({
     async exec(message: Message){
         return message.channel.send(
             //shameless github plug
-            "**Here's my source code:**\nhttps://github.com/new-zelind/LeverBot2"
+            "**Here's my source code:**\nhttps://github.com/new-zelind/eBeaver"
         );
     }
 });

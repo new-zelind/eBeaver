@@ -53,7 +53,7 @@ async function logDraw(id:string):Promise<number>{
 export default Command({
     names:["connect4"],
     documentation:{
-        description: "Challenge someone to a glorous game of Connect 4.",
+        description: "Challenge someone to a game of Connect 4.",
         group: "GAMES",
         usage: "connect4 <@User>"
     },
@@ -76,12 +76,12 @@ export default Command({
 
         //nobody challenged
         if(!challenged){
-            return message.channel.send("You need to challenge someone!");
+            return message.channel.send("You need to challenge someone.");
         }
 
         //can't challenge yourself
         if(challenged === message.author){
-            return message.channel.send("Don't challenge yourself, dingus.");
+            return message.channel.send("Don't challenge yourself. That wouldn't be fair.");
         }
 
         //can't challenge the bot.

@@ -194,6 +194,13 @@ export const Permissions = {
     );
   },
 
+  /*mod(message: Message){
+    return(
+      message.channel.type === "text" &&
+      !!message.member?.roles.cache.find((role) => role.name === "RA")
+    )
+  },*/
+
   owner(message: Message) {
     return message.author?.id === owner;
   },

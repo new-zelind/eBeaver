@@ -7,20 +7,6 @@ import {handle, isCommand, RESPONSES} from "./lib/command";
 import "./cmd";
 import "./passive/easterEggs";
 import "./passive/log/index";
-//import "./lib/handle";
-
-const statuses = [
-    "over the server",
-    "TigerFlix",
-    "y'all",
-    "sports highlights",
-    "AutoBLT",
-    "Vexbot",
-    "<ERROR>",
-    "my GPA tank",
-    "Football",
-    "the guys in McAdams"
-];
 
 //on startup
 client.on("ready", () => {
@@ -35,11 +21,7 @@ client.on("ready", () => {
     //handle commands
     addMessageHandler(handle);
 
-    //automatically update status once every minute
-    setInterval(() => {    
-        const index:number = Math.floor(Math.random() * (statuses.length - 1));
-        client.user.setActivity(statuses[index], {type: "WATCHING"});
-    }, 60000);
+    client.user.setActivity("over the server", {type: "WATCHING"});
 });
 
 //verify each member upon entry

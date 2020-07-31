@@ -22,7 +22,7 @@ export default Command({
         let numClasses = await askString("How many classes are you taking?", dm);
         while (!parseInt(numClasses, 10)) {
             numClasses = await askString(
-                "I'm sorry, I can't quite understand what you're saying. How many classes are you taking?",
+                "I'm sorry, I can't quite understand what you said. How many classes are you taking?",
                 dm
             );
         }
@@ -41,7 +41,7 @@ export default Command({
             );
             while (!parseInt(hours, 10)) {
                 hours = await askString(
-                    `I'm sorry, I can't quite understand what you're saying. How many hours for class ${i}?`,
+                    `I'm sorry, I can't quite understand what you said. How many hours for class ${i}?`,
                     dm
                 );
             }
