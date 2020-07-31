@@ -7,12 +7,13 @@ import {
 } from "discord.js";
 import {askString, choose} from "../../lib/prompt";
 import approve from "./approve";
-import {room} from "../../lib/access";
 import {selectMajor} from "./selection";
 import {roomNumbers} from "./majors";
 
 //array of confirmation responses
-const valResponses: string[] = ["Y", "YES", "N", "NO"];
+const buildings: string[] = ["BYRNES", "LEVER"];
+const floors: string[] = ["2", "3", "4", "5", "6", "7", "8", "9", "10"];
+const valAnswers: string[] = ["Y", "YES", "N", "NO"];
 
 //a function to find an existing role or make a new one
 export async function findOrMakeRole(name: string, guild: Guild): Promise<Role>{
@@ -27,11 +28,12 @@ export async function findOrMakeRole(name: string, guild: Guild): Promise<Role>{
 }
 
 export default async function verify(member: GuildMember | PartialGuildMember){
+    
     const dm: DMChannel = await member.createDM();
 
     //greeting message
     dm.send(
-        "Hello, and welcome to the Byrnes Hall 7th Floor Discord server! I'm ByrnesBot, your friendly neighborhood moderation bot. In order to gain access to the server, I need to verify who you are. Let's get started!"
+        "Hello, and welcome to the Byrnes/Lever Community Discord server! I'm eBeaver, the server moderation bot. Before you gain access to the server, I need to verify who you are."
     );
     
     //get resident's name
@@ -51,7 +53,7 @@ export default async function verify(member: GuildMember | PartialGuildMember){
     while (major === "BACK");
 
     //make additional variables
-    let room: string, cuid: string, reason: string;
+    let cuid: string, building: string, floor:string, reason: string;
 
     //get user's cuid number
     cuid = await askString(
@@ -59,15 +61,43 @@ export default async function verify(member: GuildMember | PartialGuildMember){
         dm
     );
 
-    //get user's room number + validation
-    room = await askString(
-        "And what is your room number? (e.g. A7, D6, C3, etc.)",
+    //get user's buidling + validation
+    building = await askString(
+        "Which building do you live in?",
         dm
     );
-    while(!roomNumbers.includes(room.toUpperCase()) || room !== "OVERRIDE"){
-        dm.send("I'm sorry, that room doesn't appear to exist. Be sure you say just the letter and number.");
-        room = await askString(
-            "What is your room number? (e.g. A7, D6, etc.)",
+    while(!buildings.includes(building.toUpperCase())){
+        dm.send("I'm sorry, I can't understand what you said. Try again.");
+        building = await askString(
+            "Which building do you live in?",
+            dm
+        );
+    }
+
+    //get user's floor number + validation
+    floor = await askString(
+        `Which floor do you live on in ${building}`,
+        dm
+    );
+    while(!floors.includes(floor)){
+        dm.send("I'm sorry, I can't quite understand what you said. Try again.");
+        floor = await askString(
+            "What is your floor number? (e.g. 6, 9)",
+            dm
+        );
+    }
+
+    //find if the user is a RiSE student or not.
+    let riseResponse:string, isRise:boolean;
+
+    riseResponse = await askString(
+        "Are you a member of RiSE? (Y/N)",
+        dm
+    );
+    while(!valAnswers.includes(riseResponse.toUpperCase())){
+        dm.send("I'm sorry, I couldn't quite understand what you said.");
+        riseResponse = await askString(
+            "Are you a member of RiSE? (Y/N)",
             dm
         );
     }
@@ -87,7 +117,9 @@ export default async function verify(member: GuildMember | PartialGuildMember){
     //log the verification
     let timestamp = new Date();
     console.log(
-        `VERIFIED ${member.user.username}#${member.user.discriminator}: ${name}, ${room}, ${cuid} at ${timestamp.toLocaleTimeString()}`
+        `VERIFIED ${
+            member.user.username}#${member.user.discriminator}: ${
+            name}, ${building}, ${floor}, ${isRise} ${cuid} at ${timestamp.toLocaleTimeString()}`
     );
 
     //auto-grant Resident role
@@ -95,28 +127,44 @@ export default async function verify(member: GuildMember | PartialGuildMember){
     let majorRole = await findOrMakeRole(major.toUpperCase(), member.guild);
     roles.push(majorRole.id);
 
-    if(!override){
+    //assign roles for AD and BC side members
+    if(building.toUpperCase() === "BYRNES"){
+        building = "Byrnes";
+        roles.push(
+            await (await findOrMakeRole("Byrnes", member.guild)).id
+        );
+    }
+    else{
+        building = "Lever";
+        roles.push(
+            await (await findOrMakeRole("Lever", member.guild)).id
+        );
+    }
 
-        //assign roles for AD and BC side members
-        if(room.includes("A") || room.includes("D")){
-            roles.push(
-                await (await findOrMakeRole("AD-Side", member.guild)).id
-            );
-        }
-        else{
-            roles.push(
-                await (await findOrMakeRole("BC-Side", member.guild)).id
-            );
-        }
+    if(riseResponse === "Y" || riseResponse === "YES"){
+        isRise = true;
+        roles.push(
+            await (await findOrMakeRole("RiSE", member.guild)).id
+        )
     }
 
     //send approval message
-    const approved = await approve(member, name, room, cuid, roles, override, reason);
+    const approved = await approve(
+        member, 
+        name,
+        building,
+        floor,
+        cuid,
+        isRise,
+        roles,
+        override,
+        reason
+    );
 
     //if approved, set the user's nickname and add the roles
     if(approved){
         dm.send(`Welcome to the server, ${name}!`);
-        member.setNickname(`${name} | ${room}`);
+        member.setNickname(`${name} | ${building} ${floor}}`);
         member.roles.add(roles);
     }
 

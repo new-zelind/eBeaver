@@ -10,7 +10,10 @@ export default Command ({
         usage: "unlock"
     },
 
-    check: Permissions.admin,
+    check: Permissions.any(
+        Permissions.admin,
+        Permissions.mod
+    ),
 
     fail(message: Message){
         timeout(

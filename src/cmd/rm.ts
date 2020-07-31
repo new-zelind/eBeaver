@@ -10,7 +10,7 @@ export default Command({
         usage: "rm <integer>",
     },
 
-    check: Permissions.compose(
+    check: Permissions.any(
         Permissions.admin,
         Permissions.mod
     ),

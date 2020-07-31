@@ -11,8 +11,10 @@ import {
 export default async function approve(
     member: GuildMember | PartialGuildMember,
     name: string,
-    room: string,
+    building: string,
+    floor: string,
     cuid: string,
+    isRise: boolean,
     roles: string[],
     override: boolean,
     reason: string
@@ -28,8 +30,10 @@ export default async function approve(
                 .map((role) => member.guild.roles.cache.get(role)?.toString())
                 .join(", ")}`
         )
-        .addField("Room:", room)
+        .addField("Building:", building)
+        .addField("Floor:", floor)
         .addField("CUID:", cuid)
+        .addField("Is RiSE:", isRise)
         .setTimestamp();
 
     //if an override was requested, add the reason for the override

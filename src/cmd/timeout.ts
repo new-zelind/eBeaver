@@ -14,7 +14,7 @@ export default Command({
         usage: "timeout [<@User> ... <@User>] <Duration> <Reason>",
     },
     
-    check: Permissions.compose(
+    check: Permissions.any(
         Permissions.admin,
         Permissions.mod
     ),
