@@ -20,10 +20,10 @@ export default Command({
     usage: `poll <time> <"Question"> <Option 1, Option 2, ... "Option n">`,
   },
 
-  check: Permissions.compose(Permissions.guild, Permissions.admin),
+  check: Permissions.compose(Permissions.guild, Permissions.admin, Permissions.mod),
 
   fail(message: Message) {
-    return message.reply("I can't do a poll in a DM!");
+    return message.reply("I'm sorry, I'm afraid I can't do that.");
   },
 
   async exec(message, [duration, question, ...options]) {

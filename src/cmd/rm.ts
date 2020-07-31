@@ -10,7 +10,10 @@ export default Command({
         usage: "rm <integer>",
     },
 
-    check: Permissions.admin,
+    check: Permissions.compose(
+        Permissions.admin,
+        Permissions.mod
+    ),
 
     fail(message: Message){
         timeout(

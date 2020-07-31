@@ -10,7 +10,10 @@ export default Command ({
         usage: "lock"
     },
 
-    check: Permissions.admin,
+    check: Permissions.compose(
+        Permissions.admin,
+        Permissions.mod
+    ),
 
     fail(message: Message){
         timeout(

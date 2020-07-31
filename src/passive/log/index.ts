@@ -13,42 +13,7 @@ function matchAll(str: string, re: RegExp){
         .filter((j) => j !== null)
 }
 
-//Cleans up role and user mentions
-async function cleanUp(message: Message) {
-    let content = message.content;
-
-    //clean up the bullshit in role and member mentions
-    const roles = await Promise.all(
-        matchAll(content, /<@&([0-9]+)>/g).map(async (match) => ({
-            key: (match as RegExpExecArray)[0],
-            role: (message.guild as Guild).roles.cache.get(
-                (match as RegExpExecArray)[1]
-            ),
-        }))
-    );
-    const members = await Promise.all(
-        matchAll(content, /<@!([0-9]+)>/g).map(async (match) => ({
-            key: (match as RegExpExecArray)[0],
-            member: (message.guild as Guild).members.cache.get(
-                (match as RegExpExecArray)[1]
-            ),
-        }))
-    );
-
-    //replace all role and user mentions
-    roles.forEach(
-        ({key, role}) =>
-            (content = content.replace(key, `@MEMBER: [${role?.name}]`))
-    );
-    members.forEach(
-        ({key, member}) =>
-            (content = content.replace(key, `@MEMBER: [${member.nickname}]`))
-    );
-    
-    return content;
-}
-
-//a message handler to log every message sent in the server
+//Message handler to log every message sent in the server
 addMessageHandler(async (message) => {
 
     //ignore messages in DMs and messages sent by the bot
@@ -63,7 +28,7 @@ addMessageHandler(async (message) => {
 
     //log each message sent
     serverLog.send(
-        `[${message.author.username}#${message.author.discriminator}] in ${message.channel.toString()}: ${await cleanUp(message)}`,
+        `[${message.author.username}#${message.author.discriminator}] in ${message.channel.toString()}:\`${message}\``,
         {
             files: message.attachments.map((attachment) => attachment.url),
             split: true
@@ -90,6 +55,6 @@ client.on("messageUpdate", async (old, current) => {
 
     //send the updated message
     serverLog.send(
-        `[${old.author.username}#${old.author.discriminator}] in ${old.channel.toString()}: ${old.content.toString()} => ${current.content.toString()}`
+        `[${old.author.username}#${old.author.discriminator}] in ${old.channel.toString()}: \`${old.content.toString()}\` => \`${current.content.toString()}\``
     );
 });
