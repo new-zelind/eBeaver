@@ -1,0 +1,130 @@
+export const COLLEGES: string[] = [
+    "AGRICULTURE FORESTRY AND LIFE SCIENCES",
+    "ARCHITECTURE ART AND HUMANITIES",
+    "BEHAVIORAL SOCIAL AND HEALTH SCIENCES",
+    "BUSINESS",
+    "EDUCATION",
+    "ENGINEERING COMPUTING AND APPLIED SCIENCES",
+    "SCIENCE",
+    "UNDECLARED",
+    "OVERRIDE"
+];
+
+// CAFLS
+
+export const CAFLS: string[] = [
+    "AGRIBUSINESS",
+    "AGRICULTURAL EDU",
+    "ANIMAL AND VET SCIENCE",
+    "ENVIRONMENT AND NATURAL RESOURCES",
+    "FOOD SCIENCE AND HUMAN NUTRITION",
+    "FOREST RESOURCES MGMT",
+    "HORTICULTURE",
+    "PACKAGING SCIENCE",
+    "PLANT AND ENVIRONMENTAL SCI",
+    "PREVET MEDICINE",
+    "TURFGRASS",
+    "WILDLIFE AND FISHERIES BIOLOGY",
+    "BACK"
+];
+
+// CAAH
+
+export const CAAH: string[] = [
+    "ARCHITECTURE",
+    "FINE ARTS",
+    "CONSTRUCTION SCIENCE AND MGMT",
+    "ENGLISH",
+    "HISTORY",
+    "LANGUAGE AND INTL BUSINESS",
+    "LANGAUGE AND INTL HEALTH",
+    "MODERN LANGUAGE",
+    "PERFORMING ARTS",
+    "PHILOSOPHY",
+    "RELIGIOUS STUDIES",
+    "BACK"
+];
+
+// CBSHS
+
+export const CBSHS: string[] = [
+    "ANTHROPOLOGY",
+    "COMM",
+    "CRIMINAL JUSTICE",
+    "PARKS REC AND TOURISM MGMT",
+    "HEALTH SCIENCE",
+    "PSYCHOLOGY",
+    "POLITICAL SCIENCE",
+    "SOCIOLOGY",
+    "SPORTS COMM",
+    "BACK"
+];
+
+// CBUS
+
+export const CBUS: string[] = [
+    "ACCOUNTING",
+    "ECONOMICS",
+    "FINANCE",
+    "GRAPHIC COMM",
+    "MANAGEMENT",
+    "MARKETING",
+    "BACK"
+];
+
+// CEDU
+
+export const CEDU: string[] = [
+    "AGRICULTURAL EDU",
+    "EARLY CHILDHOOD EDU",
+    "ELEMENTARY EDU",
+    "MIDDLE LEVEL EDU",
+    "MATHEMATICS TEACHING",
+    "SECONDARY ENGLISH",
+    "SECONDARY MATHEMATICS",
+    "SECONDARY SOCIAL STUDIES",
+    "SCIENCE TEACHING",
+    "SPECIAL EDU",
+    "BACK"
+];
+
+// CECAS
+
+export const CECAS: string[] = [
+    "BIOENGINEERING ENGR",
+    "BIOSYSTEMS ENGR",
+    "CHEMICAL ENGR",
+    "COMPUTER ENGR",
+    "COMPUTER INF SYSTEMS",
+    "COMPUTER SCIENCE",
+    "ELECTRICAL ENGR",
+    "ENVIRONMENTAL ENGR",
+    "INDUSTRIAL ENGR",
+    "MATERIALS ENGR",
+    "MATERIALS SCIENCE",
+    "MECHANICAL ENGR",
+    "BACK"
+];
+
+// CSCI
+
+export const CSCI: string[] = [
+    "ASTRONOMY",
+    "BIOCHEMISTRY",
+    "BIOLOGY",
+    "MICROBIOLOGY",
+    "BIOCHEMISTRY",
+    "CHEMISTRY",
+    "GENETICS",
+    "MATH",
+    "PHYSICS",
+    "BACK"
+];
+
+// rooms - A6/C6 omitted, they're the RA rooms
+export const roomNumbers: string[] = [
+    "A1", "A2", "A3", "A4", "A5", "A7",
+    "B1", "B2", "B3", "B4", "B5", "B6", "B7",
+    "C1", "C2", "C3", "C4", "C5", "C7",
+    "D1", "D2", "D3", "D4", "D5", "D6", "D7"
+];
