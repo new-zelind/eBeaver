@@ -13,7 +13,7 @@ export default async function approve(
     name: string,
     building: string,
     floor: string,
-    cuid: string,
+    title: string,
     isRise: boolean,
     roles: string[],
     override: boolean,
@@ -32,7 +32,7 @@ export default async function approve(
         )
         .addField("Building:", building)
         .addField("Floor:", floor)
-        .addField("CUID:", cuid)
+        .addField("Title:", title)
         .addField("Is RiSE:", isRise)
         .setTimestamp();
 
