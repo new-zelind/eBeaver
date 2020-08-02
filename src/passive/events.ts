@@ -2,7 +2,8 @@ import {
     Guild,
     User,
     TextChannel,
-    GuildMember
+    GuildMember,
+    Message
 } from "discord.js";
 import {makeEmbed} from "../lib/util";
 
@@ -29,15 +30,17 @@ async function handleBanAdd(
         .then((logs) => logs.entries.first());
     if(!entry || entry.executor.bot) return;
 
+    let timestamp = new Date();
+
     const embed = makeEmbed()
         .setColor("#C8102E")
         .setTitle("NEW BAN ADDED")
         .setImage(user.avatarURL())
         .addFields(
             {name: "User ID", value: user.id},
-            {name: "User Name", value: user.username},
-            {name: "Discriminator", value: user.discriminator},
-            {name: "Timestamp", value: Date.now().toLocaleString()},
+            {name: "User Name", value: user.username, inline: true},
+            {name: "Discriminator", value: user.discriminator, inline: true},
+            {name: "Timestamp", value: timestamp.toLocaleTimeString()},
             {
                 name: "Executor",
                 value: `${
@@ -73,16 +76,22 @@ async function handleBanRemove(
         .then((logs) => logs.entries.first());
     if(!entry || entry.executor.bot) return;
 
+    let timestamp = new Date();
+
     const embed = makeEmbed()
         .setColor("#00B2A9")
         .setTitle("BAN REMOVED")
         .setImage(user.avatarURL())
         .addFields(
             {name: "User ID", value: user.id},
-            {name: "User Name", value: user.username},
-            {name: "Discriminator", value: user.discriminator},
-            {name: "Timestamp", value: Date.now().toLocaleString()},
-            {name: "Executor", value: `${entry.executor.username}#${entry.executor.discriminator}`}
+            {name: "User Name", value: user.username, inline: true},
+            {name: "Discriminator", value: user.discriminator, inline: true},
+            {name: "Timestamp", value: timestamp.toLocaleTimeString()},
+            {
+                name: "Executor",
+                value: `${
+                    entry.executor.username}#${
+                    entry.executor.discriminator}`}
         );
 
     await eventLog.send(embed);
@@ -99,10 +108,13 @@ async function handleBanRemove(
 async function handleLeave(
     member:GuildMember
 ):Promise<void>{
+
     const eventLog = member.guild.channels.cache.find(
         channel => channel.name === "event-log"
     ) as TextChannel;
     if(!eventLog) return;
+
+    let timestamp = new Date();
 
     const embed = makeEmbed()
         .setColor("#F6EB61")
@@ -117,7 +129,7 @@ async function handleLeave(
                 value: member.user.discriminator,
                 inline: true
             },
-            {name: "Timestamp", value: Date.now().toLocaleString()},
+            {name: "Timestamp", value: timestamp.toLocaleTimeString()},
         );
 
     await eventLog.send(embed);
