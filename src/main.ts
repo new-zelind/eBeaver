@@ -1,12 +1,13 @@
 import * as Discord from "discord.js";
+import { handleBanAdd, handleBanRemove, handleLeave} from "./passive/events";
 import {handleMessage, addMessageHandler} from "./lib/message";
 import verify from "./passive/verification";
 import {client} from "./client";
 import {setTimeoutCounts} from "./lib/timeout";
 import {handle, isCommand, RESPONSES} from "./lib/command";
 import "./cmd";
-import "./passive/easterEggs";
 import "./passive/log/index";
+import "./passive/events";
 
 //on startup
 client.on("ready", () => {
@@ -32,6 +33,11 @@ client.on("guildMemberAdd", (member: Discord.GuildMember) => {
     verify(member);
 });
 
+//handle kicks or members leaving
+client.on("guildMemberRemove", (member: Discord.GuildMember) => {
+    handleLeave(member);
+})
+
 //handle messages appropriately
 client.on("message", handleMessage);
 
@@ -43,6 +49,16 @@ client.on("messageUpdate", (old, current) => {
     //delete old command and update
     if(isCommand(old) && RESPONSES.has(old)) RESPONSES.get(old)?.delete();
     return handle(current);
+});
+
+//handle banhammers
+client.on("guildBanAdd", (guild:Discord.Guild, user:Discord.User) => {
+    handleBanAdd(guild, user);
+});
+
+//Handle unbannings
+client.on("guildBanRemove", (guild:Discord.Guild, user:Discord.User) => {
+    handleBanRemove(guild, user);
 });
 
 //error handling
