@@ -1,5 +1,11 @@
 import * as Discord from "discord.js";
-import { handleBanAdd, handleBanRemove, handleLeave} from "./passive/events";
+import {
+    handleBanAdd,
+    handleBanRemove,
+    handleLeave,
+    handleMessageDelete,
+    handleMessageUpdate
+} from "./passive/events";
 import {handleMessage, addMessageHandler} from "./lib/message";
 import verify from "./passive/verification";
 import {client} from "./client";
@@ -34,31 +40,35 @@ client.on("guildMemberAdd", (member: Discord.GuildMember) => {
 });
 
 //handle kicks or members leaving
-client.on("guildMemberRemove", (member: Discord.GuildMember) => {
-    handleLeave(member);
+client.on("guildMemberRemove", async (member: Discord.GuildMember) => {
+    return await handleLeave(member);
 })
 
 //handle messages appropriately
 client.on("message", handleMessage);
 
-client.on("messageUpdate", (old, current) => {
+client.on("messageUpdate", async (old, current) => {
     
     //ignore bot messages
     if(old.author?.bot) return false;
 
     //delete old command and update
     if(isCommand(old) && RESPONSES.has(old)) RESPONSES.get(old)?.delete();
-    return handle(current);
+    return (await handleMessageUpdate(old, current) && handle(current));
 });
 
+client.on("messageDelete", async (message:Discord.Message) => {
+    return await handleMessageDelete(message);
+})
+
 //handle banhammers
-client.on("guildBanAdd", (guild:Discord.Guild, user:Discord.User) => {
-    handleBanAdd(guild, user);
+client.on("guildBanAdd", async (guild:Discord.Guild, user:Discord.User) => {
+    return await handleBanAdd(guild, user);
 });
 
 //Handle unbannings
-client.on("guildBanRemove", (guild:Discord.Guild, user:Discord.User) => {
-    handleBanRemove(guild, user);
+client.on("guildBanRemove", async (guild:Discord.Guild, user:Discord.User) => {
+    return await handleBanRemove(guild, user);
 });
 
 //error handling

@@ -3,8 +3,10 @@ import {
     TextChannel,
     Guild,
     Message,
+    User
 } from "discord.js";
 import {client} from "../../client";
+import { makeEmbed } from "../../lib/util";
 
 //RegExp bullshit
 function matchAll(str: string, re: RegExp){
@@ -36,25 +38,4 @@ addMessageHandler(async (message) => {
     );
 
     return false;
-});
-
-//a way to log when messages are updated or edited
-client.on("messageUpdate", async (old, current) => {
-
-    //get old and new attributes and content
-    if(old.partial) old = await old.fetch();
-    if(current.partial) current = await current.fetch();
-    if(old.author.bot) return true;
-    if(old.channel.type === "dm") return false;
-
-    //find and validate the server log channel
-    const serverLog = old.guild?.channels.cache.find(
-        (channel) => channel.name === "server-log"
-    ) as TextChannel;
-    if(!serverLog) return false;
-
-    //send the updated message
-    serverLog.send(
-        `[${old.author.username}#${old.author.discriminator}] in ${old.channel.toString()}: \`${old.content.toString()}\` => \`${current.content.toString()}\``
-    );
 });
