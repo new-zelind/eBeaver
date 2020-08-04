@@ -59,7 +59,7 @@ client.on("messageUpdate", async (old, current) => {
 
 client.on("messageDelete", async (message:Discord.Message) => {
     return await handleMessageDelete(message);
-})
+});
 
 //handle banhammers
 client.on("guildBanAdd", async (guild:Discord.Guild, user:Discord.User) => {
